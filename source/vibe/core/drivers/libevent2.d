@@ -861,7 +861,7 @@ final class Libevent2UDPConnection : UDPConnection {
 
 		// generate the bind address string
 		m_bindAddress = bind_addr;
-		char buf[64];
+		char[64] buf;
 		void* ptr;
 		if( bind_addr.family == AF_INET ) ptr = &bind_addr.sockAddrInet4.sin_addr;
 		else ptr = &bind_addr.sockAddrInet6.sin6_addr;
