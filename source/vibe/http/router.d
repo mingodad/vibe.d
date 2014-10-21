@@ -29,6 +29,8 @@ else version = VibeRouterTreeMatch;
 */
 interface HTTPRouter : HTTPServerRequestHandler {
 	@property string prefix() const;
+	@property HTTPServerURLRewriter url_rewriter();
+	@property void url_rewriter(HTTPServerURLRewriter cb);
 
 	/// Adds a new route for request that match the path and method
 	HTTPRouter match(HTTPMethod method, string path, HTTPServerRequestDelegate cb);
@@ -105,6 +107,7 @@ final class URLRouter : HTTPRouter {
 		version (VibeRouterTreeMatch) MatchTree!Route m_routes;
 		else Route[] m_routes;
 		string m_prefix;
+		HTTPServerURLRewriter m_url_rewriter;
 	}
 
 	this(string prefix = null)
@@ -113,6 +116,9 @@ final class URLRouter : HTTPRouter {
 	}
 
 	@property string prefix() const { return m_prefix; }
+
+	@property void url_rewriter(HTTPServerURLRewriter cb) { m_url_rewriter = cb; }
+	@property HTTPServerURLRewriter url_rewriter() { return m_url_rewriter; }
 
 	/// Adds a new route for requests matching the specified HTTP method and pattern.
 	URLRouter match(HTTPMethod method, string path, HTTPServerRequestDelegate cb)
@@ -143,6 +149,10 @@ final class URLRouter : HTTPRouter {
 	/// Handles a HTTP request by dispatching it to the registered route handlers.
 	void handleRequest(HTTPServerRequest req, HTTPServerResponse res)
 	{
+		if(m_url_rewriter !is null)
+		{
+			m_url_rewriter(req);
+		}
 		auto method = req.method;
 
 		auto path = req.path;

@@ -14,7 +14,7 @@ import vibe.core.drivers.threadedfile; // temporarily needed tp get mkstemps to 
 import vibe.core.driver;
 
 import std.conv;
-import std.c.stdio;
+import core.stdc.stdio;
 import std.datetime;
 import std.exception;
 import std.file;

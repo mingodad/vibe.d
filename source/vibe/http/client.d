@@ -524,6 +524,7 @@ final class HTTPClient {
 		req.headers["Accept-Encoding"] = "gzip, deflate";
 		req.headers["Host"] = m_server;
 		requester(req);
+		*close_conn = req.headers.get("Connection", "keep-alive") != "keep-alive";
 		req.finalize();
 
 		return req.method != HTTPMethod.HEAD;

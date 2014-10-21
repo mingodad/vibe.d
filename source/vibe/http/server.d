@@ -317,6 +317,8 @@ HTTPServerResponse createTestHTTPServerResponse(OutputStream data_sink = null, S
 /* Public types                                                                                   */
 /**************************************************************************************************/
 
+/// URLRewriter request handler
+alias HTTPServerURLRewriter = void function(HTTPServerRequest req);
 /// Delegate based request handler
 alias HTTPServerRequestDelegate = void delegate(HTTPServerRequest req, HTTPServerResponse res);
 /// Static function based request handler
